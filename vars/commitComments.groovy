@@ -6,10 +6,9 @@ def call() {
             returnStdout: true
     ).trim()
     def data = readJSON text: "${latestReleaseJson}"
-    echo "tag: ${data.tag_name}"
 
     def commitHistoryText = sh(
-            script: 'git log `git describe --tags --abbrev=0`..HEAD --oneline',
+            script: "git log ${data.tag_name}..HEAD --oneline",
             returnStdout: true
     ).trim()
 
