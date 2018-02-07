@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 
-def call(String[] majorKeywords = ['API'], String[] minorKeywords = ['FEAT']) {
+def call(var majorKeywords = ['API'], var minorKeywords = ['FEAT']) {
     def commitHistoryText = sh(
             script: "git log `git describe --tags --abbrev=0`..HEAD --oneline",
             returnStdout: true
