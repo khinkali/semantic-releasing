@@ -20,7 +20,7 @@ Go to `http://YOUR_JENKINS/configure` and make the following settings:
 env.VERSION = semanticReleasing()
 ```
 ### Change the markers for the major and minor version
-You can simple pass the list with your markers to the function call.
+You can simply pass the list with your markers to the function call.
 ```
 ...
 @Library('semantic_releasing')_
