@@ -1,17 +1,15 @@
 #!/usr/bin/env groovy
 
-def call() {
+def call(String[] majorKeywords = ['API'], String[] minorKeywords = ['FEAT']) {
     def commitHistoryText = sh(
             script: "git log `git describe --tags --abbrev=0`..HEAD --oneline",
             returnStdout: true
     ).trim()
 
-
     def allMarkers = []
     def array = commitHistoryText.split("\n")
     for (def i = 0; i < array.size(); i++) {
         def entry = array[i]
-        echo "entry: ${entry}"
         def startIndex = entry.indexOf("[")
         def endIndex = entry.indexOf("]")
         if (startIndex == -1 || endIndex == -1) {
@@ -29,7 +27,7 @@ def call() {
     def minor = versionParts[1].toInteger()
     def bug = versionParts[2].toInteger()
 
-    if (allMarkers.contains("API")) {
+    if (!allMarkers.disjoint(['API'])) {
         major += 1
         minor = 0
         bug = 0
