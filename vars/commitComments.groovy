@@ -20,7 +20,7 @@ def call() {
         if (startIndex == -1) {
             continue
         }
-        allComments << entry.substring(startIndex + 1).trim().replaceAll("\n", "[NL]")
+        allComments << entry.substring(startIndex + 1).trim().replaceAll("\n", "[NL]").replaceAll("\'", "[SINGLE QUOTE]").replaceAll("\"", "[DOUBLE QUOTE]")
     }
 
     return allComments
