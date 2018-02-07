@@ -10,11 +10,14 @@ def call() {
     def array = commitHistoryText.split('\n')
     for (def i = 0; i < array.size(); i++) {
         def entry = array[i]
+        echo "entry: ${entry}"
         def startIndex = entry.indexOf(']')
+        echo "startIndex: ${startInde}"
         if (startIndex == -1) {
             continue
         }
         allComments << entry.substring(startIndex + 1).trim()
+        echo "allComments: ${allComments}"
     }
 
     return allComments
