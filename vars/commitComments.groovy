@@ -12,7 +12,7 @@ def call() {
         def entry = array[i]
         echo "entry: ${entry}"
         def startIndex = entry.indexOf(']')
-        echo "startIndex: ${startInde}"
+        echo "startIndex: ${startIndex}"
         if (startIndex == -1) {
             continue
         }
