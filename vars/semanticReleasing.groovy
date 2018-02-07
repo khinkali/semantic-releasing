@@ -1,4 +1,6 @@
-def semanticReleasing() {
+#!/usr/bin/env groovy
+
+def call() {
     def commitHistoryText = sh(
             script: "git log `git describe --tags --abbrev=0`..HEAD --oneline",
             returnStdout: true
@@ -40,5 +42,3 @@ def semanticReleasing() {
 
     return "${major}.${minor}.${bug}"
 }
-
-return this
