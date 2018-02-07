@@ -27,7 +27,7 @@ def call(String[] majorKeywords = ['API'], String[] minorKeywords = ['FEAT']) {
     def minor = versionParts[1].toInteger()
     def bug = versionParts[2].toInteger()
 
-    if (!allMarkers.disjoint(['API'])) {
+    if (!allMarkers.disjoint(majorKeywords)) {
         major += 1
         minor = 0
         bug = 0
