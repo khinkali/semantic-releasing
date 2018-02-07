@@ -20,7 +20,7 @@ def call() {
         if (startIndex == -1) {
             continue
         }
-        allComments << entry.substring(startIndex + 1).trim()
+        allComments << entry.substring(startIndex + 1).trim().replaceAll("\n", "[NL]")
     }
 
     return allComments
