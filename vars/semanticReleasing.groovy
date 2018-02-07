@@ -31,7 +31,7 @@ def call(List<String> majorKeywords = ['API'], List<String> minorKeywords = ['FE
         major += 1
         minor = 0
         bug = 0
-    } else if (allMarkers.disjoint(minorKeywords)) {
+    } else if (!allMarkers.disjoint(minorKeywords)) {
         minor += 1
         bug = 0
     } else {
