@@ -1,8 +1,11 @@
 #!/usr/bin/env groovy
 
 def call() {
-    def json = sh 'curl https://api.github.com/repos/khinkali/sink/releases/latest'
-    def data = readJSON text: $ { json }
+    def latestReleaseJson = sh(
+            script: 'curl https://api.github.com/repos/khinkali/sink/releases/latest',
+            returnStdout: true
+    ).trim()
+    def data = readJSON text: "${latestReleaseJson}"
     echo "tag: ${data.tag_name}"
 
     def commitHistoryText = sh(
