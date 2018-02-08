@@ -20,8 +20,20 @@ def call() {
         if (startIndex == -1) {
             continue
         }
-        allComments << entry.substring(startIndex + 1).trim().replaceAll("\\\\n", "[NL]").replaceAll("\'", "[SINGLE QUOTE]").replaceAll("\"", "[DOUBLE QUOTE]")
+        entry = entry.substring(startIndex + 1).trim().replaceAll("\\\\n", "[NL]").replaceAll("\'", "[SINGLE QUOTE]").replaceAll("\"", "[DOUBLE QUOTE]")
+        entry = insertIssueLink(entry)
+        allComments << entry
     }
 
     return allComments
+}
+
+def insertIssueLink(def entry) {
+    def startIndex = entry.indexOf('[')
+    def endIndex = entry.indexOf(']')
+    if (startIndex == -1 || endIndex == -1) {
+        return entry
+    }
+    def issueNumber = entry.substring(startIndex + 1, endIndex).trim().toInteger()
+    return entry.substring(0, endIndex + 1) + "(https://github.com/khinkali/sink/issues/" + issueNumber + ")" + entry.substring(endIndex + 1)
 }
