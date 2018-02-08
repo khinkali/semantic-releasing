@@ -29,4 +29,11 @@ env.VERSION = semanticReleasing(['MAJOR', 'BIG'],['MINOR', 'SMALL'])
 ```
 ## Create a release
 If you're using [GitHub](https://github.com) then you can include automated
-releases as well. 
+releases as well.  
+You just have to pass the version, GitHub account name, GitHub repository name and the GitHub token with
+rights to the repository.
+```
+withCredentials([usernamePassword(credentialsId: 'github-api-token', passwordVariable: 'GITHUB_TOKEN', usernameVariable: 'GIT_USERNAME')]) {
+    gitHubRelease(env.VERSION, 'khinkali', 'sink', GITHUB_TOKEN)
+}
+```
