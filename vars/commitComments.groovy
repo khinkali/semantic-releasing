@@ -35,5 +35,5 @@ def insertIssueLink(def entry) {
         return entry
     }
     def issueNumber = entry.substring(startIndex + 1, endIndex).trim().toInteger()
-    return entry.substring(0, endIndex + 1) + "(https://github.com/khinkali/sink/issues/" + issueNumber + ")" + entry.substring(endIndex + 1)
+    return entry.substring(0, startIndex) + "[" + entry.substring(startIndex, endIndex + 1) + "](https://github.com/khinkali/sink/issues/" + issueNumber + ")" + entry.substring(endIndex + 1)
 }
