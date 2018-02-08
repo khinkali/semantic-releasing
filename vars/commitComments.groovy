@@ -15,7 +15,7 @@ def call(String userName, String repositoryName) {
     def allComments = []
     def array = commitHistoryText.split('\n')
     for (def i = 0; i < array.size(); i++) {
-        String entry = array[i]
+        def entry = array[i]
         def startIndex = entry.indexOf(']')
         if (startIndex == -1) {
             continue
@@ -28,7 +28,7 @@ def call(String userName, String repositoryName) {
     return allComments
 }
 
-def insertIssueLink(String entry, String userName, String repositoryName) {
+def insertIssueLink(def entry, def userName, def repositoryName) {
     def startIndex = entry.indexOf('[')
     def endIndex = entry.indexOf(']')
     if (startIndex == -1 || endIndex == -1) {
