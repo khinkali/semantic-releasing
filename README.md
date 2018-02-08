@@ -27,3 +27,6 @@ You can simply pass the list with your markers to the function call.
 ...
 env.VERSION = semanticReleasing(['MAJOR', 'BIG'],['MINOR', 'SMALL'])
 ```
+## Create a release
+If you're using [GitHub](https://github.com) then you can include automated
+releases as well. 
