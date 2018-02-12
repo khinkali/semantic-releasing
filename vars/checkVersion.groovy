@@ -6,7 +6,7 @@ def call(String version, String healthUrl, Integer sleepInSeconds = 1, Integer t
             returnStdout: true
     ).trim()
     while (versionText != version) {
-        sleep "${sleepInSeconds}"
+        sleep sleepInSeconds
         echo "still waiting - version is ${versionText} and should be ${version}"
         versionText = sh(
                 script: "curl ${healthUrl} --max-time ${timeoutInSeconds}",
