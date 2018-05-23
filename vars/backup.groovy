@@ -3,12 +3,12 @@
 def call(String podLabel,
          String containerName,
          String containerPath,
+         String repositoryUrl,
          String kc = 'kubectl',
          String gitEmail = 'jenkins@khinkali.ch',
          String gitName = 'Jenkins',
          String commitMessage = 'new_version',
-         String repositoryCredentials = 'bitbucket',
-         String repositoryUrl = 'bitbucket.org/khinkali/grafana_backup') {
+         String repositoryCredentials = 'bitbucket') {
     def jenkinsPods = sh(
             script: "${kc} get po -l ${podLabel} --no-headers",
             returnStdout: true
