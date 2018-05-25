@@ -1,10 +1,8 @@
 #!/usr/bin/env groovy
 
 def call(List<String> majorKeywords = ['API'], List<String> minorKeywords = ['FEAT']) {
-    def commitHistoryText = sh(
-            script: 'git log `git describe --tags --abbrev=0`..HEAD --oneline',
-            returnStdout: true
-    ).trim()
+    def oldTag = getOldTag()
+    def commitHistoryText = getCommitHistoryText(oldTag)
 
     def allMarkers = []
     def array = commitHistoryText.split('\n')
@@ -18,10 +16,7 @@ def call(List<String> majorKeywords = ['API'], List<String> minorKeywords = ['FE
         allMarkers << entry.substring(startIndex + 1, endIndex).trim()
     }
 
-    def oldTag = sh(
-            script: 'git describe --tags --abbrev=0',
-            returnStdout: true
-    ).trim()
+
     def versionParts = oldTag.split('\\.')
     def major = versionParts[0].toInteger()
     def minor = versionParts[1].toInteger()
@@ -39,4 +34,18 @@ def call(List<String> majorKeywords = ['API'], List<String> minorKeywords = ['FE
     }
 
     return "${major}.${minor}.${bug}"
+}
+
+def getCommitHistoryText(oldTag) {
+    try {
+        return sh(
+                script: "git log ${oldTag}..HEAD --oneline",
+                returnStdout: true
+        ).trim()
+    } catch (ex) {
+        return sh(
+                script: "git log --oneline",
+                returnStdout: true
+        ).trim()
+    }
 }
