@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 
-def call(String name) {
+def call(String name, Boolean dockerBuild = true) {
     cleanWs()
     stage('checkout') {
         git url: "https://github.com/khinkali/${name}"
@@ -17,17 +17,21 @@ def call(String name) {
             sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/khinkali/${name}.git --tags"
         }
 
-        container('docker') {
-            sh "docker build -t khinkali/${name}:${env.VERSION} ."
-            withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                sh "docker login --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}"
+        if (dockerBuild) {
+            container('docker') {
+                sh "docker build -t khinkali/${name}:${env.VERSION} ."
+                withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                    sh "docker login --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}"
+                }
+                sh "docker push khinkali/${name}:${env.VERSION}"
             }
-            sh "docker push khinkali/${name}:${env.VERSION}"
         }
     }
 
     stage('deploy') {
-        sh "sed -i -e 's/        image: khinkali\\/${name}:todo/        image: khinkali\\/${name}:${env.VERSION}/' kubeconfig.yml"
+        if (dockerBuild) {
+            sh "sed -i -e 's/        image: khinkali\\/${name}:todo/        image: khinkali\\/${name}:${env.VERSION}/' kubeconfig.yml"
+        }
         container('kubectl') {
             sh "kubectl apply -f kubeconfig.yml"
         }
