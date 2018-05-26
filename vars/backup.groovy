@@ -22,7 +22,7 @@ def call(String podLabel,
     def git = "git --git-dir '${containerPath}/.git' --work-tree '${containerPath}'"
     sh "${kc} exec ${podName} -c ${containerName} -- ${git} config user.email \"${gitEmail}\""
     sh "${kc} exec ${podName} -c ${containerName} -- ${git} config user.name \"${gitName}\""
-    sh "${kc} exec ${podName} -c ${containerName} -- ${git} add --all"
+    sh "${kc} exec ${podName} -c ${containerName} -- ${git} add --all ."
     sh "${kc} exec ${podName} -c ${containerName} -- ${git} diff --quiet && ${kc} exec ${podName} -c ${containerName} -- ${git} diff --staged --quiet || ${kc} exec ${podName} -c ${containerName} -- ${git} commit -am '${commitMessage}'"
     withCredentials([usernamePassword(credentialsId: repositoryCredentials, passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
         sh "${kc} exec ${podName} -c ${containerName} -- ${git} push https://${GIT_USERNAME}:${GIT_PASSWORD}@${repositoryUrl}"
