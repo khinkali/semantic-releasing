@@ -22,7 +22,7 @@ def call(String podLabel,
 
     def execInContainer = "${kc} exec ${podName} -c ${containerName} --"
     try {
-        sh "${execInContainer} find ${containerPath} -type d -empty -exec touch {}/.gitignore"
+        sh "${execInContainer} find ${containerPath} -type d -empty -exec touch {}/.gitignore \\\\ ; && echo \"test\""
     } catch (e) {
         echo e.getMessage()
     }
