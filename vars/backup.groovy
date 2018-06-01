@@ -21,7 +21,11 @@ def call(String podLabel,
     def podName = podNameLine.substring(0, startIndex)
 
     def execInContainer = "${kc} exec ${podName} -c ${containerName} --"
-    sh "${execInContainer} find ${containerPath} -type d -empty -exec touch {}/.gitignore \\\\;"
+    try {
+        sh "${execInContainer} find ${containerPath} -type d -empty -exec touch {}/.gitignore \\\\;"
+    } catch (e) {
+        echo e.getMessage()
+    }
 
     def git = "git --git-dir '${containerPath}/.git' --work-tree '${containerPath}'"
     sh "${execInContainer} ${git} config user.email \"${gitEmail}\""
