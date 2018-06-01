@@ -19,12 +19,16 @@ def call(String podLabel,
         return
     }
     def podName = podNameLine.substring(0, startIndex)
+
+    def execInContainer = "${kc} exec ${podName} -c ${containerName} --"
+    sh "${execInContainer} find ${containerPath} -type d -empty -exec touch {}/.gitignore \\;"
+
     def git = "git --git-dir '${containerPath}/.git' --work-tree '${containerPath}'"
-    sh "${kc} exec ${podName} -c ${containerName} -- ${git} config user.email \"${gitEmail}\""
-    sh "${kc} exec ${podName} -c ${containerName} -- ${git} config user.name \"${gitName}\""
-    sh "${kc} exec ${podName} -c ${containerName} -- ${git} add --all ."
-    sh "${kc} exec ${podName} -c ${containerName} -- ${git} diff --quiet && ${kc} exec ${podName} -c ${containerName} -- ${git} diff --staged --quiet || ${kc} exec ${podName} -c ${containerName} -- ${git} commit -am '${commitMessage}'"
+    sh "${execInContainer} ${git} config user.email \"${gitEmail}\""
+    sh "${execInContainer} ${git} config user.name \"${gitName}\""
+    sh "${execInContainer} ${git} add --all ."
+    sh "${execInContainer} ${git} diff --quiet && ${execInContainer} ${git} diff --staged --quiet || ${execInContainer} ${git} commit -am '${commitMessage}'"
     withCredentials([usernamePassword(credentialsId: repositoryCredentials, passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-        sh "${kc} exec ${podName} -c ${containerName} -- ${git} push https://${GIT_USERNAME}:${GIT_PASSWORD}@${repositoryUrl}"
+        sh "${execInContainer} ${git} push https://${GIT_USERNAME}:${GIT_PASSWORD}@${repositoryUrl}"
     }
 }
