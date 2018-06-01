@@ -22,8 +22,8 @@ def call(String podLabel,
 
     def execInContainer = "${kc} exec ${podName} -c ${containerName} --"
     try {
-        def backslash = "\\"
-        sh "${execInContainer} find ${containerPath} -type d -empty -exec touch {}/.gitignore ${backslash} ;"
+        def backslash = "\\\\"
+        sh "${execInContainer} find ${containerPath} -type d -empty -exec touch .gitignore"
     } catch (e) {
         echo e.getMessage()
     }
