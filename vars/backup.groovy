@@ -24,7 +24,6 @@ def call(String podLabel,
     try {
         sh """
             ${execInContainer} find ${containerPath} -type d -empty -exec touch {}/.gitignore \\;
-            echo hallo
            """
     } catch (e) {
         echo e.getMessage()
